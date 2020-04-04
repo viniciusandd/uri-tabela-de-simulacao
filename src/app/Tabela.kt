@@ -22,7 +22,8 @@ class Tabela {
                     simulacao.tempoClienteNaFila =
                             if (simulacaoAnterior.tempoFinalServicoRelogioSimulacao >= simulacao.tempoChegadaRelogioSimulacao) simulacaoAnterior.tempoFinalServicoRelogioSimulacao - simulacao.tempoChegadaRelogioSimulacao else 0
                     simulacao.tempoInicioServicoRelogioSimulacao = simulacao.tempoChegadaRelogioSimulacao + simulacao.tempoClienteNaFila
-                    simulacao.tempoLivreOperador = simulacao.tempoChegadaRelogioSimulacao - simulacaoAnterior.tempoFinalServicoRelogioSimulacao
+                    simulacao.tempoLivreOperador =
+                            if (simulacaoAnterior.tempoFinalServicoRelogioSimulacao < simulacao.tempoChegadaRelogioSimulacao) simulacao.tempoChegadaRelogioSimulacao - simulacaoAnterior.tempoFinalServicoRelogioSimulacao else 0
                 }
             }
             simulacao.tempoFinalServicoRelogioSimulacao = simulacao.tempoServico + simulacao.tempoInicioServicoRelogioSimulacao
