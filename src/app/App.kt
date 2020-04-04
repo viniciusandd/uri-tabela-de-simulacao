@@ -1,14 +1,26 @@
 package app
 
+import kotlinx.html.ButtonType
 import kotlinx.html.id
+import kotlinx.html.js.onClickFunction
 import react.*
 import react.dom.*
 
 interface AppState : RState {
-
+    var tempoDeSimulacao: Int
+    var tempoEntreChegadas: ArrayList<Int>
+    var tempoDeServico: ArrayList<Int>
+    var alSimulacao: ArrayList<Simulacao>?
 }
 
 class App : RComponent<RProps, AppState>() {
+    override fun AppState.init() {
+        tempoDeSimulacao = 180
+        tempoEntreChegadas = arrayListOf(10, 12, 15)
+        tempoDeServico = arrayListOf(9, 10, 11)
+        alSimulacao = null
+    }
+
     override fun RBuilder.render() {
         appHeaderUi()
         containerUi()
@@ -69,13 +81,23 @@ class App : RComponent<RProps, AppState>() {
                         }
                     }
 
-                    button(classes = "btn btn-secondary btn-lg btn-block") {
-                        attrs.id = "buttonSimular"
-                        +"Simular"
-                    }
+                    botaoSimularUi()
                 }
             }
             div("col-3") {}
+        }
+    }
+
+    private fun RBuilder.botaoSimularUi() {
+        button(type = ButtonType.button, classes = "btn btn-secondary btn-lg btn-block") {
+            attrs.id = "buttonSimular"
+            +"Simular"
+            attrs.onClickFunction = {
+                val tabela = Tabela()
+                setState {
+                    alSimulacao = tabela.criar(tempoDeSimulacao, tempoEntreChegadas, tempoDeServico)
+                }
+            }
         }
     }
 
@@ -96,7 +118,21 @@ class App : RComponent<RProps, AppState>() {
                     }
                 }
                 tbody {
-
+                    state.alSimulacao?.let {
+                        for (simulacao in it) {
+                            tr {
+                                td { +simulacao.cliente.toString() }
+                                td { +simulacao.tempoDesdeUltimaChegada.toString() }
+                                td { +simulacao.tempoChegadaRelogioSimulacao.toString() }
+                                td { +simulacao.tempoServico.toString() }
+                                td { +simulacao.tempoInicioServicoRelogioSimulacao.toString() }
+                                td { +simulacao.tempoClienteNaFila.toString() }
+                                td { +simulacao.tempoFinalServicoRelogioSimulacao.toString() }
+                                td { +simulacao.tempoClienteNoSistema.toString() }
+                                td { +simulacao.tempoLivreOperador.toString() }
+                            }
+                        }
+                    }
                 }
             }
         }
