@@ -29,12 +29,8 @@ class Tabela {
             simulacao.tempoFinalServicoRelogioSimulacao = simulacao.tempoServico + simulacao.tempoInicioServicoRelogioSimulacao
             simulacao.tempoClienteNoSistema = simulacao.tempoServico + simulacao.tempoClienteNaFila
             alSimulacao.add(simulacao)
-
-            println(simulacao.tempoFinalServicoRelogioSimulacao)
-
             if (simulacao.tempoFinalServicoRelogioSimulacao >= tempoDeSimulacao)
                 break
-
             i++
         }
         return alSimulacao

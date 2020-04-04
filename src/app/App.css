@@ -7,6 +7,7 @@ body {
   background-color: #212529;
   padding: 25px;
   color: white;
+  margin-bottom: 15px;
 }
 
 .App-intro {
@@ -18,8 +19,8 @@ body {
 }
 
 .row {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   padding-top: 10px;
 }
 
@@ -29,8 +30,4 @@ body {
 
 input {
   margin-bottom: 5px;
-}
-
-#buttonSimular {
-  margin-bottom: 10px;
 }

@@ -2,12 +2,16 @@ package app
 
 import kotlinx.html.ButtonType
 import kotlinx.html.id
+import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
+import org.w3c.dom.HTMLInputElement
 import react.*
 import react.dom.*
 
 interface AppState : RState {
     var tempoDeSimulacao: Int
+    var tec: Int
+    var ts: Int
     var tempoEntreChegadas: ArrayList<Int>
     var tempoDeServico: ArrayList<Int>
     var alSimulacao: ArrayList<Simulacao>?
@@ -15,9 +19,9 @@ interface AppState : RState {
 
 class App : RComponent<RProps, AppState>() {
     override fun AppState.init() {
-        tempoDeSimulacao = 180
-        tempoEntreChegadas = arrayListOf(10, 12, 15)
-        tempoDeServico = arrayListOf(9, 10, 11)
+        tempoDeSimulacao = 0
+        tec = 0
+        ts = 0
         alSimulacao = null
     }
 
@@ -49,15 +53,30 @@ class App : RComponent<RProps, AppState>() {
                     div("form-group") {
                         input(classes = "form-control") {
                             attrs.placeholder = "Tempo de Simulação (minutos)"
+                            attrs.onChangeFunction = {
+                                val target = it.target as HTMLInputElement
+                                setState {
+                                    tempoDeSimulacao = target.value.toInt()
+                                }
+                            }
                         }
                     }
                     div("form-row") {
                         div("form-group col-md-6") {
                             input(classes = "form-control") {
                                 attrs.placeholder = "TEC"
+                                attrs.onChangeFunction = {
+                                    val target = it.target as HTMLInputElement
+                                    setState {
+                                        tec = target.value.toInt()
+                                    }
+                                }
                             }
                             button(classes = "btn btn-secondary btn-sm") {
                                 +"Adicionar"
+                                attrs.onClickFunction = {
+
+                                }
                             }
                         }
                         div("form-group col-md-6") {
@@ -69,9 +88,18 @@ class App : RComponent<RProps, AppState>() {
                         div("form-group col-md-6") {
                             input(classes = "form-control") {
                                 attrs.placeholder = "TS"
+                                attrs.onChangeFunction = {
+                                    val target = it.target as HTMLInputElement
+                                    setState {
+                                        ts = target.value.toInt()
+                                    }
+                                }
                             }
                             button(classes = "btn btn-secondary btn-sm") {
                                 +"Adicionar"
+                                attrs.onClickFunction = {
+
+                                }
                             }
                         }
                         div("form-group col-md-6") {
@@ -81,23 +109,38 @@ class App : RComponent<RProps, AppState>() {
                         }
                     }
 
-                    botaoSimularUi()
+                    botoesUi()
                 }
             }
             div("col-3") {}
         }
     }
 
-    private fun RBuilder.botaoSimularUi() {
-        button(type = ButtonType.button, classes = "btn btn-secondary btn-lg btn-block") {
-            attrs.id = "buttonSimular"
-            +"Simular"
-            attrs.onClickFunction = {
-                val tabela = Tabela()
-                setState {
-                    alSimulacao = tabela.criar(tempoDeSimulacao, tempoEntreChegadas, tempoDeServico)
+    private fun RBuilder.botoesUi() {
+        div("row") {
+            div("col-3") {}
+            div("col-3") {
+                button(type = ButtonType.button, classes = "btn btn-secondary btn-lg") {
+                    attrs.id = "buttonSimular"
+                    +"Simular"
+                    attrs.onClickFunction = {
+                        val tabela = Tabela()
+                        setState {
+                            alSimulacao = tabela.criar(tempoDeSimulacao, tempoEntreChegadas, tempoDeServico)
+                        }
+                    }
                 }
             }
+            div("col-3") {
+                button(type = ButtonType.button, classes = "btn btn-danger btn-lg") {
+                    attrs.id = "buttonReiniciar"
+                    +"Reiniciar"
+                    attrs.onClickFunction = {
+
+                    }
+                }
+            }
+            div("col-3") {}
         }
     }
 
