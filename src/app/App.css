@@ -4,7 +4,7 @@ body {
 }
 
 .App-header {
-  background-color: #000;
+  background-color: #212529;
   padding: 25px;
   color: white;
 }
@@ -15,4 +15,22 @@ body {
 
 .App-ticker {
   font-size: medium;
+}
+
+.row {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-top: 10px;
+}
+
+.borderRow {
+    border-style: groove;
+}
+
+input {
+  margin-bottom: 5px;
+}
+
+#buttonSimular {
+  margin-bottom: 10px;
 }
