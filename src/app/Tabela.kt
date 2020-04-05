@@ -1,14 +1,34 @@
 package app
 
-class Tabela {
-    fun criar(tempoDeSimulacao: Int, tempoEntreChegadas: ArrayList<Int>, tempoDeServico: ArrayList<Int>) : ArrayList<Simulacao> {
+object Tabela {
+    var tempoDeSimulacao: Int = 0
+    var tempoEntreChegadas: ArrayList<Int> = arrayListOf()
+    var tempoDeServico: ArrayList<Int> = arrayListOf()
+
+    fun mostrarValores() {
+        println("Tempo de Simulação: ${this.tempoDeSimulacao}\n\n")
+        for (tec in this.tempoEntreChegadas) {
+            println("TEC: ${tec}\n")
+        }
+        println("\n")
+        for (ts in this.tempoDeServico) {
+            println("TS: ${ts}\n")
+        }
+        println("\n")
+    }
+
+    fun criar() : ArrayList<Simulacao> {
         val alSimulacao = ArrayList<Simulacao>()
+
+        if (this.tempoDeSimulacao == 0 || this.tempoEntreChegadas.size == 0 || this.tempoDeServico.size == 0)
+            return alSimulacao
+
         var i = 0
         while (true) {
             val simulacao = Simulacao()
             simulacao.cliente = i + 1
-            simulacao.tempoDesdeUltimaChegada = this.sortearTEC(tempoEntreChegadas, i)
-            simulacao.tempoServico = this.sortearTS(tempoDeServico, i)
+            simulacao.tempoDesdeUltimaChegada = this.sortearTEC(i)
+            simulacao.tempoServico = this.sortearTS(i)
             when (i) {
                 0 -> {
                     simulacao.tempoChegadaRelogioSimulacao = simulacao.tempoDesdeUltimaChegada
@@ -29,14 +49,20 @@ class Tabela {
             simulacao.tempoFinalServicoRelogioSimulacao = simulacao.tempoServico + simulacao.tempoInicioServicoRelogioSimulacao
             simulacao.tempoClienteNoSistema = simulacao.tempoServico + simulacao.tempoClienteNaFila
             alSimulacao.add(simulacao)
-            if (simulacao.tempoFinalServicoRelogioSimulacao >= tempoDeSimulacao)
+            if (simulacao.tempoFinalServicoRelogioSimulacao >= this.tempoDeSimulacao)
                 break
             i++
         }
         return alSimulacao
     }
 
-    fun sortearTEC(tempoEntreChegadas: ArrayList<Int>, index: Int? = null) : Int {
+    fun reiniciar() {
+        this.tempoDeSimulacao = 0
+        this.tempoEntreChegadas.clear()
+        this.tempoDeServico.clear()
+    }
+
+    private fun sortearTEC(index: Int? = null) : Int {
         if (index != null) {
             when (index) {
                 0 -> return 15
@@ -56,10 +82,10 @@ class Tabela {
                 14 -> return 12
             }
         }
-        return tempoEntreChegadas.shuffled().take(1)[0]
+        return this.tempoEntreChegadas.shuffled().take(1)[0]
     }
 
-    fun sortearTS(tempoDeServico: ArrayList<Int>, index: Int? = null) : Int {
+    private fun sortearTS(index: Int? = null) : Int {
         if (index != null) {
             when (index) {
                 0 -> return 11
@@ -79,6 +105,6 @@ class Tabela {
                 14 -> return 11
             }
         }
-        return tempoDeServico.shuffled().take(1)[0]
+        return this.tempoDeServico.shuffled().take(1)[0]
     }
 }

@@ -9,17 +9,13 @@ import react.*
 import react.dom.*
 
 interface AppState : RState {
-    var tempoDeSimulacao: Int
     var tec: Int
     var ts: Int
-    var tempoEntreChegadas: ArrayList<Int>
-    var tempoDeServico: ArrayList<Int>
     var alSimulacao: ArrayList<Simulacao>?
 }
 
 class App : RComponent<RProps, AppState>() {
     override fun AppState.init() {
-        tempoDeSimulacao = 0
         tec = 0
         ts = 0
         alSimulacao = null
@@ -55,9 +51,7 @@ class App : RComponent<RProps, AppState>() {
                             attrs.placeholder = "Tempo de Simulação (minutos)"
                             attrs.onChangeFunction = {
                                 val target = it.target as HTMLInputElement
-                                setState {
-                                    tempoDeSimulacao = target.value.toInt()
-                                }
+                                Tabela.tempoDeSimulacao = target.value.toInt()
                             }
                         }
                     }
@@ -72,15 +66,22 @@ class App : RComponent<RProps, AppState>() {
                                     }
                                 }
                             }
-                            button(classes = "btn btn-secondary btn-sm") {
+                            button(type = ButtonType.button, classes = "btn btn-secondary btn-sm") {
                                 +"Adicionar"
                                 attrs.onClickFunction = {
-
+                                    setState {
+                                        Tabela.tempoEntreChegadas.add(tec)
+                                    }
                                 }
                             }
                         }
                         div("form-group col-md-6") {
                             textArea(classes = "form-control") {
+                                attrs.defaultValue = ""
+                                for (tec in Tabela.tempoEntreChegadas)
+                                {
+                                    attrs.value += "$tec\n"
+                                }
                             }
                         }
                     }
@@ -95,16 +96,22 @@ class App : RComponent<RProps, AppState>() {
                                     }
                                 }
                             }
-                            button(classes = "btn btn-secondary btn-sm") {
+                            button(type = ButtonType.button, classes = "btn btn-secondary btn-sm") {
                                 +"Adicionar"
                                 attrs.onClickFunction = {
-
+                                    setState {
+                                        Tabela.tempoDeServico.add(ts)
+                                    }
                                 }
                             }
                         }
                         div("form-group col-md-6") {
                             textArea(classes = "form-control") {
-
+                                attrs.defaultValue = ""
+                                for (ts in Tabela.tempoDeServico)
+                                {
+                                    attrs.value += "$ts\n"
+                                }
                             }
                         }
                     }
@@ -124,19 +131,21 @@ class App : RComponent<RProps, AppState>() {
                     attrs.id = "buttonSimular"
                     +"Simular"
                     attrs.onClickFunction = {
-                        val tabela = Tabela()
                         setState {
-                            alSimulacao = tabela.criar(tempoDeSimulacao, tempoEntreChegadas, tempoDeServico)
+                            alSimulacao = Tabela.criar()
                         }
                     }
                 }
             }
             div("col-3") {
-                button(type = ButtonType.button, classes = "btn btn-danger btn-lg") {
+                button(type = ButtonType.reset, classes = "btn btn-danger btn-lg") {
                     attrs.id = "buttonReiniciar"
                     +"Reiniciar"
                     attrs.onClickFunction = {
-
+                        Tabela.reiniciar()
+                        setState {
+                            alSimulacao = null
+                        }
                     }
                 }
             }

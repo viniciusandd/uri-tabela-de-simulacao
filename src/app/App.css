@@ -31,3 +31,7 @@ body {
 input {
   margin-bottom: 5px;
 }
+
+textarea {
+  height: 100px !important;
+}
