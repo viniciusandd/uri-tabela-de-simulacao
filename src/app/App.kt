@@ -1,6 +1,7 @@
 package app
 
 import kotlinx.html.ButtonType
+import kotlinx.html.InputType
 import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
@@ -47,22 +48,22 @@ class App : RComponent<RProps, AppState>() {
             div("col-6") {
                 form {
                     div("form-group") {
-                        input(classes = "form-control") {
+                        input(classes = "form-control", type = InputType.number) {
                             attrs.placeholder = "Tempo de Simulação (minutos)"
                             attrs.onChangeFunction = {
                                 val target = it.target as HTMLInputElement
-                                Tabela.tempoDeSimulacao = target.value.toInt()
+                                Tabela.tempoDeSimulacao = if (target.value.isNotEmpty()) target.value.toInt() else 0
                             }
                         }
                     }
                     div("form-row") {
                         div("form-group col-md-6") {
-                            input(classes = "form-control") {
+                            input(classes = "form-control", type = InputType.number) {
                                 attrs.placeholder = "TEC"
                                 attrs.onChangeFunction = {
                                     val target = it.target as HTMLInputElement
                                     setState {
-                                        tec = target.value.toInt()
+                                        tec = if (target.value.isNotEmpty()) target.value.toInt() else 0
                                     }
                                 }
                             }
@@ -87,12 +88,12 @@ class App : RComponent<RProps, AppState>() {
                     }
                     div("form-row") {
                         div("form-group col-md-6") {
-                            input(classes = "form-control") {
+                            input(classes = "form-control", type = InputType.number) {
                                 attrs.placeholder = "TS"
                                 attrs.onChangeFunction = {
                                     val target = it.target as HTMLInputElement
                                     setState {
-                                        ts = target.value.toInt()
+                                        ts = if (target.value.isNotEmpty()) target.value.toInt() else 0
                                     }
                                 }
                             }
@@ -144,6 +145,8 @@ class App : RComponent<RProps, AppState>() {
                     attrs.onClickFunction = {
                         Tabela.reiniciar()
                         setState {
+                            tec = 0
+                            ts = 0
                             alSimulacao = null
                         }
                     }

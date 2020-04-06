@@ -27,8 +27,8 @@ object Tabela {
         while (true) {
             val simulacao = Simulacao()
             simulacao.cliente = i + 1
-            simulacao.tempoDesdeUltimaChegada = this.sortearTEC(i)
-            simulacao.tempoServico = this.sortearTS(i)
+            simulacao.tempoDesdeUltimaChegada = this.sortearTEC()
+            simulacao.tempoServico = this.sortearTS()
             when (i) {
                 0 -> {
                     simulacao.tempoChegadaRelogioSimulacao = simulacao.tempoDesdeUltimaChegada
