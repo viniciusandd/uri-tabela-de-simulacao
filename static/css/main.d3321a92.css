@@ -1,0 +1,75 @@
+body {
+  text-align: center;
+  background-color: #9c9a9a;
+}
+
+.App-header {
+  background-color: #212529;
+  padding: 25px;
+  color: white;
+  margin-bottom: 15px;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.App-ticker {
+  font-size: medium;
+}
+
+.row {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding-top: 10px;
+}
+
+.borderRow {
+    border-style: groove;
+}
+
+input {
+  margin-bottom: 5px;
+}
+
+textarea {
+  height: 200px !important;
+  pointer-events:none !important;
+  background: grey !important;
+  border-style: none !important;
+  font-size: 13px !important;
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.Logo {
+  position: relative;
+  display: inline-block;
+}
+
+.Logo-react {
+  animation: Logo-spin infinite 10s linear;
+  height: 100%;
+}
+
+.Logo-kotlin {
+  opacity: 0;
+  animation: Logo-spin infinite 10s 5s linear;
+  height: 72%;
+  position: absolute;
+  top: 14%;
+  right: 24%;
+}
+
+@keyframes Logo-spin {
+  from { transform: rotateY(-90deg); opacity: 1 }
+  50% { transform: rotateY(90deg); opacity: 1 }
+  51% { transform: rotateY(90deg); opacity: 0 }
+  to { transform: rotateY(270deg); opacity: 0 }
+}
+
+
+/*# sourceMappingURL=main.d3321a92.css.map*/
