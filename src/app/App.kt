@@ -1,3 +1,5 @@
+@file:Suppress("UnsafeCastFromDynamic")
+
 package app
 
 import kotlinx.html.ButtonType
@@ -12,14 +14,14 @@ import react.dom.*
 interface AppState : RState {
     var tec: Int
     var ts: Int
-    var alSimulacao: ArrayList<Simulacao>?
+    var tabela: Triple<ArrayList<Simulacao>, ArrayList<Int>, ArrayList<Float>>?
 }
 
 class App : RComponent<RProps, AppState>() {
     override fun AppState.init() {
         tec = 0
         ts = 0
-        alSimulacao = null
+        tabela = null
     }
 
     override fun RBuilder.render() {
@@ -39,11 +41,46 @@ class App : RComponent<RProps, AppState>() {
         div("container") {
             formUi()
             tableUi()
+            resultadosUi()
+        }
+    }
+
+    private fun RBuilder.resultadosUi() {
+        div("row") {
+            state.tabela?.third?.let {
+                table("table table-striped table-dark table-bordered") {
+                    tr {
+                        td { b { +"Tempo médio de espera na fila" } }
+                        td { +it[0].format(2) }
+                        td { +"Minutos" }
+                    }
+                    tr {
+                        td { b { +"Probabilidade de um cliente esperar na fila" } }
+                        td { +it[1].format(2) }
+                        td { +"%" }
+                    }
+                    tr {
+                        td { b { +"Probabilidade do operador livre" } }
+                        td { +it[2].format(2) }
+                        td { +"%" }
+                    }
+                    tr {
+                        td { b { +"Tempo médio de serviço" } }
+                        td { +it[3].format(2) }
+                        td { +"Minutos" }
+                    }
+                    tr {
+                        td { b { +"Tempo médio despendido no sistema" } }
+                        td { +it[4].format(2) }
+                        td { +"Minutos" }
+                    }
+                }
+            }
         }
     }
 
     private fun RBuilder.formUi() {
-        div("row borderRow") {
+        div("row borderRow formulario") {
             div("col-3") {}
             div("col-6") {
                 form {
@@ -133,7 +170,7 @@ class App : RComponent<RProps, AppState>() {
                     +"Simular"
                     attrs.onClickFunction = {
                         setState {
-                            alSimulacao = Tabela.criar()
+                            tabela = Tabela.criar()
                         }
                     }
                 }
@@ -147,7 +184,7 @@ class App : RComponent<RProps, AppState>() {
                         setState {
                             tec = 0
                             ts = 0
-                            alSimulacao = null
+                            tabela = null
                         }
                     }
                 }
@@ -173,7 +210,7 @@ class App : RComponent<RProps, AppState>() {
                     }
                 }
                 tbody {
-                    state.alSimulacao?.let {
+                    state.tabela?.first?.let {
                         for (simulacao in it) {
                             tr {
                                 td { +simulacao.cliente.toString() }
@@ -188,10 +225,25 @@ class App : RComponent<RProps, AppState>() {
                             }
                         }
                     }
+                    state.tabela?.second?.let {
+                        tr(classes = "borderTable") {
+                            td {  }
+                            td {  }
+                            td {  }
+                            td { b { +it[0].toString() } }
+                            td {  }
+                            td { b { +it[1].toString() } }
+                            td {  }
+                            td { b { +it[2].toString() } }
+                            td { b { +it[3].toString() } }
+                        }
+                    }
                 }
             }
         }
     }
+
+    fun Float.format(digits: Int): String = this.asDynamic().toFixed(digits)
 }
 
 fun RBuilder.app() = child(App::class) {}

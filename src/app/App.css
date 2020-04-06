@@ -4,7 +4,7 @@ body {
 }
 
 .App-header {
-  background-color: #212529;
+  background-color: #343A40;
   padding: 25px;
   color: white;
   margin-bottom: 15px;
@@ -38,4 +38,12 @@ textarea {
   background: grey !important;
   border-style: none !important;
   font-size: 13px !important;
+}
+
+.borderTable {
+  border-style: solid;
+}
+
+.formulario {
+  background-color: #343A40;
 }

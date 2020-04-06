@@ -17,11 +17,26 @@ object Tabela {
         println("\n")
     }
 
-    fun criar() : ArrayList<Simulacao> {
+    fun criar() : Triple<ArrayList<Simulacao>, ArrayList<Int>, ArrayList<Float>> {
         val alSimulacao = ArrayList<Simulacao>()
 
+        var somaTempoServico = 0
+        var somaTempoClienteNaFila = 0
+        var somaTempoClienteNoSistema = 0
+        var somaTempoLivreOperador = 0
+
+        var mediaEsperaNaFila = 0.0f
+        var probabilidadeClienteEsperarNaFila = 0.0f
+        var probabilidadeOperadorLivre = 0.0f
+        var probabilidadeTmpoMediaServico = 0.0f
+        var tempoMedioDispendidoSistema = 0.0f
+
         if (this.tempoDeSimulacao == 0 || this.tempoEntreChegadas.size == 0 || this.tempoDeServico.size == 0)
-            return alSimulacao
+            return Triple(alSimulacao,
+                    arrayListOf(somaTempoServico, somaTempoClienteNaFila, somaTempoClienteNoSistema, somaTempoLivreOperador),
+                    arrayListOf(mediaEsperaNaFila, probabilidadeClienteEsperarNaFila, probabilidadeOperadorLivre, probabilidadeTmpoMediaServico,
+                            tempoMedioDispendidoSistema)
+            )
 
         var i = 0
         while (true) {
@@ -48,12 +63,28 @@ object Tabela {
             }
             simulacao.tempoFinalServicoRelogioSimulacao = simulacao.tempoServico + simulacao.tempoInicioServicoRelogioSimulacao
             simulacao.tempoClienteNoSistema = simulacao.tempoServico + simulacao.tempoClienteNaFila
+
+            somaTempoServico += simulacao.tempoServico
+            somaTempoClienteNaFila += simulacao.tempoClienteNaFila
+            somaTempoClienteNoSistema += simulacao.tempoClienteNoSistema
+            somaTempoLivreOperador += simulacao.tempoLivreOperador
+
+            mediaEsperaNaFila = somaTempoClienteNaFila / simulacao.cliente.toFloat()
+            probabilidadeClienteEsperarNaFila = somaTempoClienteNaFila / simulacao.cliente.toFloat()
+            probabilidadeOperadorLivre = somaTempoLivreOperador / simulacao.tempoFinalServicoRelogioSimulacao.toFloat()
+            probabilidadeTmpoMediaServico = somaTempoServico / simulacao.cliente.toFloat()
+            tempoMedioDispendidoSistema = somaTempoClienteNoSistema / simulacao.cliente.toFloat()
+
             alSimulacao.add(simulacao)
             if (simulacao.tempoFinalServicoRelogioSimulacao >= this.tempoDeSimulacao)
                 break
             i++
         }
-        return alSimulacao
+        return Triple(alSimulacao,
+                arrayListOf(somaTempoServico, somaTempoClienteNaFila, somaTempoClienteNoSistema, somaTempoLivreOperador),
+                arrayListOf(mediaEsperaNaFila, probabilidadeClienteEsperarNaFila, probabilidadeOperadorLivre, probabilidadeTmpoMediaServico,
+                        tempoMedioDispendidoSistema)
+        )
     }
 
     fun reiniciar() {
