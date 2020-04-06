@@ -33,5 +33,9 @@ input {
 }
 
 textarea {
-  height: 100px !important;
+  height: 200px !important;
+  pointer-events:none !important;
+  background: grey !important;
+  border-style: none !important;
+  font-size: 13px !important;
 }
