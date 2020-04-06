@@ -1,1 +1,1 @@
-A aplicação está diponível em: http://viniciusandd.github.io/uri-tabela-simulacao
+A aplicação está diponível em: https://viniciusandd.github.io/uri-tabela-de-simulacao
